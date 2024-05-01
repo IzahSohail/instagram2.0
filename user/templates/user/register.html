@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<!-- Specifies that this document is HTML5 -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- The character encoding of the document, UTF-8 covers most characters and symbols in the world -->
+    <title>Register</title>
+    <!-- Title of the page shown in the browser tab -->
+</head>
+<body>
+    <div>
+        <!-- Container for the registration heading and prompt -->
+        <div>
+            <h1>Register</h1>
+            <!-- The main heading for the registration page -->
+            <p>Join our community now.</p>
+            <!-- A prompt encouraging users to register -->
+        </div>
+        <div>
+            <!-- Container for the registration form -->
+            <form method="post" enctype="multipart/form-data">
+                <!--
+                The form element for user registration.
+                - method="post": Specifies that the form data will be submitted via the POST method, which is used for sending data securely.
+                - enctype="multipart/form-data": Specifies the encoding type for the form. This is necessary when the form includes file uploads, like photos.
+                -->
+                <div>
+                    {{ form.as_p }}
+                    <!--
+                    Renders the Django form fields here. Each field is wrapped in a <p> tag.
+                    'form' is the context variable passed from the view that contains the form data.
+                    -->
+                </div>
+                <button type="submit">Register</button>
+                <!-- A button to submit the form -->
+            </form>
+        </div>
+    </div>
+</body>
+</html>
