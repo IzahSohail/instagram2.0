@@ -9,3 +9,5 @@ class createAlbumForm(forms.ModelForm):
         widgets = {
             'album_name': forms.TextInput(attrs={'class': 'form-control'}),
         }
+
+

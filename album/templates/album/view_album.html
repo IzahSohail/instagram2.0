@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>View Album</title>
+</head>
+<body>
+    <h1>View Album</h1>
+    <p>Name: {{ album.album_name }}</p>
+    <p>Date: {{ album.date_of_creation }}</p>
+    <p>Owner: {{ album.user }}</p>
+    <p>Photos:</p>
+    <ul>
+        <!--Iterating over the photos in the album and displaying them-->
+        {% for photo in album.photos.all %}
+            <li>
+                <img src="{{ photo.photo.url }}" alt="{{ photo.caption }}" width="200">
+                <p>{{ photo.caption }}</p>
+            </li>
+        {% endfor %}
+
+    <!--Option to upload photos to the album with option to add caption-->
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="photo">
+        <button type="submit">Upload Photo</button> </br> </br>
+        <textarea name="caption" placeholder="Add a caption"></textarea>
+    </form>
+
+    
+</html>

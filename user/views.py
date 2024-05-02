@@ -11,6 +11,7 @@ import base64
 from PIL import Image
 from io import BytesIO
 from django.contrib.auth.views import LoginView
+from django.contrib import messages
 
 # Decorator to make this view exempt from CSRF token requirement
 @csrf_exempt
