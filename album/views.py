@@ -20,7 +20,7 @@ def create_album(request):
             user = User.objects.get(id=request.session['user_id'])
             album.user = user
             album.save()
-            return render(request, 'album/view_album.html', {'album': album})
+            return redirect('view_album', album_id=album.album_id)
     else:
         form = createAlbumForm()
     return render(request, 'album/create_album.html', {'form': form})
