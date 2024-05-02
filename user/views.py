@@ -6,6 +6,7 @@ from django.contrib import messages
 # Import the form and model related to user registration
 from .forms import UserRegistrationForm, UserLoginForm
 from .models import User
+from album.models import Album
 # Import base64 for encoding and the Python Imaging Library (PIL) for image processing
 import base64
 from PIL import Image
@@ -125,3 +126,13 @@ def users(request):
 
     # Render the users template, passing in the list of users for display
     return render(request, 'user/users.html', {'users': users_list})
+
+def user_info(request):
+    # Fetch the user instance using the session data
+    user = User.objects.get(id=request.session['user_id'])
+
+    #get the album based on the user
+    albums = Album.objects.filter(user=user)
+
+    # Render the user info template, passing in the user instance and encoded photo data
+    return render(request, 'user/user_info.html', {'user': user, 'albums': albums})

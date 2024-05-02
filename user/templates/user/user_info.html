@@ -7,8 +7,7 @@
 </head>
 <body>
     <!-- Main content of the page starts here -->
-    <h1>User Registered Successfully</h1>
-    <!-- A heading indicating the user has been successfully registered -->
+    <h2>Your Profile</h2>
 
     <!-- Displaying the first name of the user -->
     <p>First Name: <strong>{{ user.first_name }}</strong></p>
@@ -28,6 +27,16 @@
         <!-- If there is no photo data, inform the user that no photo was provided -->
         <p>No photo provided.</p>
     {% endif %}
+
+    <h2>Your Albums</h2>
+    <ol>
+        {% for album in albums %}
+            <li>
+                <p>Album name: <strong>{{ album.album_name }}</strong></p>
+                <p>Date of creation: <strong>{{ album.date_of_creation }}</strong></p>
+            </li>
+        {% endfor %}
+    </ol>
 
     <!-- A link to navigate back to the home page -->
     <a href="/">Go back home</a>
