@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Album</title>
+</head>
+<body>
+    <h1>Create Album</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div>
+            {{ form.as_p }}
+        </div>
+    </form>
+</html>
