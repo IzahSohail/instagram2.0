@@ -12,6 +12,9 @@
       <!-- Container for the login heading and prompt -->
       <div>
         <h1>Log In</h1>
+        {% if error_message %}
+        <p>{{ error_message }}</p>
+        {% endif %}
         <!-- The main heading for the login page -->
         <p>Please enter your username & password.</p>
         <!-- A prompt encouraging users to register -->

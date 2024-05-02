@@ -2,7 +2,7 @@
 from django.shortcuts import render, redirect
 # Import the decorator to exempt a view from CSRF verification
 from django.views.decorators.csrf import csrf_exempt
-
+from django.contrib import messages
 # Import the form and model related to user registration
 from .forms import UserRegistrationForm, UserLoginForm
 from .models import User
@@ -73,20 +73,25 @@ def login(request):
                 # User authentication successful
                 request.session['user_id'] = user.id
                 print("Logged in successfully", user.id)
-
-                return render(request, 'user/user_info.html', {'success_message': 'Welcome back!', 'user': user})
+                return render(request, 'user/welcome.html', {'success_message': 'Welcome back', 'user': user})
             else:
+                form = UserLoginForm()
                 # Password is incorrect
                 messages.error(request, 'Invalid email or password.')
-                return render(request, 'user/welcome.html', {'error_message': 'Invalid email or password.'})
+                return render(request, 'user/login.html', {'error_message': 'Invalid email or password.', 'form':form})
         except User.DoesNotExist:
+            form = UserLoginForm()
             # No user with the provided email exists
             messages.error(request, 'User does not exist.')
-            return render(request, 'user/welcome.html', {'error_message': 'User does not exist.'})
+            return render(request, 'user/login.html', {'error_message': 'User does not exist.', 'form':form})
     else:
         form = UserLoginForm()
     return render(request, 'user/login.html', {'form': form})
 
+def logout(request):
+    if 'used_id' in request.session:
+        del request.session['user_id']
+    return render(request, 'user/welcome.html')
 
 def welcome(request):
     # Render the welcome page template

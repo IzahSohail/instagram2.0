@@ -16,8 +16,8 @@ urlpatterns = [
     path('register/', user_views.register, name='register'),
 
 
-    path('login/', user_views.login ,name='login'),
-    #path('logout/', auth_views.LogoutView.as_view(template_name = 'register/logout.html') ,name='logout'),
+    path('login/', user_views.login, name='login'),
+    path('logout/', user_views.welcome, name='logout'),
 
 
     # Define a URL pattern for the '/users/' path. This pattern routes requests to the users view function,

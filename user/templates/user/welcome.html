@@ -1,20 +1,21 @@
 <!DOCTYPE html>
-<!-- Declares the document type and version of HTML; here, it signifies HTML5. -->
 <html lang="en">
   <head>
-    <title>Welcome to the Photo Sharing App</title>
+    <title>Photo Sharing App</title>
     <!-- The title of the page, which appears in the browser tab. -->
   </head>
   <body>
-    <!-- Main content of the webpage starts here -->
-    <h1>Welcome to the Photo Sharing App!</h1>
-    <!-- Main heading displayed prominently on the page, introducing the app. -->
+    {% if success_message %}
+    <h1>{{ success_message }}, {{ user.first_name }}!</h1>
+    <p>Feel free to upload some epic photos today :)</p>
+    <a href="/logout">Logout</a>
 
+    {% else %}
+    <h1>Welcome to the Photo Sharing App</h1>
     <p>Join our community and start sharing your photos today.</p>
-    <!-- A brief introduction or call to action encouraging new users to join the app. -->
-
+    <a href="/login">Login</a>
     <a href="/register">Register Now</a>
-    <!-- A link to the registration page. When clicked, it takes users to a form where they can sign up. -->
+    {% endif %}
 
     <a href="/users">View our users</a>
     <!-- A link to a page that displays a list of current users. Useful for new or existing users to explore the community. -->
