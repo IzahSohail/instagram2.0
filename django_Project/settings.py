@@ -87,9 +87,9 @@ WSGI_APPLICATION = 'django_Project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',  # Using PostgreSQL database
-        'NAME': 'project2',  # Database name
+        'NAME': 'my_database',  # Database name
         'USER': 'postgres',  # Database user
-        'PASSWORD': 'izahaha#567',  # Database password
+        'PASSWORD': 'password',  # Database password
         'HOST': 'localhost',  # Database host
         'PORT': '5432',  # Database port
     }
@@ -127,4 +127,4 @@ STATIC_URL = 'static/'
 # DEFAULT PRIMARY KEY FIELD TYPE
 # Default auto-field type to use for primary keys
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-LOGIN_REDIRECT_URL = 'welcome'
+#LOGIN_REDIRECT_URL = 'welcome'

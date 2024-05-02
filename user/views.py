@@ -90,14 +90,18 @@ def login(request):
     return render(request, 'user/login.html', {'form': form})
 
 def logout(request):
-    if 'used_id' in request.session:
+    if 'user_id' in request.session:
         del request.session['user_id']
-    return render(request, 'user/welcome.html')
+    #print(request.session['user_id'])
+    return render(request, 'user/logout.html')
 
 def welcome(request):
+    context = {}
+    if 'user_id' in request.session:
+        user = User.objects.get(id=request.session['user_id'])
+        context = { 'user': user, 'success_message': 'Welcome back' }
     # Render the welcome page template
-    return render(request, 'user/welcome.html')
-
+    return render(request, 'user/welcome.html', context)
 
 def users(request):
     # Query the database for all user instances
