@@ -1,4 +1,5 @@
 from django.db import models
+import base64
 
 # Create your models here.
 

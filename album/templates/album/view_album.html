@@ -10,13 +10,15 @@
     <p>Owner: {{ album.user }}</p>
     <p>Photos:</p>
     <ul>
-        <!--Iterating over the photos in the album and displaying them-->
-        {% for photo in album.photos.all %}
+        <ul>
+            {% for photo in photos %}
             <li>
-                <img src="{{ photo.photo.url }}" alt="{{ photo.caption }}" width="200">
+                <img src="{{ photo.photo_data }}" alt="Photo">
                 <p>{{ photo.caption }}</p>
             </li>
-        {% endfor %}
+            {% endfor %}
+        </ul>
+        
 
     <!--Option to upload photos to the album with option to add caption-->
     <form method="post" enctype="multipart/form-data">
