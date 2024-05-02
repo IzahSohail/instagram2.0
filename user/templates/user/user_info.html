@@ -32,7 +32,7 @@
     <ol>
         {% for album in albums %}
             <li>
-                <p>Album name: <strong>{{ album.album_name }}</strong></p>
+                <a href= "/view_album/{{ album.album_id }}">Album Name: <strong>{{ album.album_name }}</strong></a>
                 <p>Date of creation: <strong>{{ album.date_of_creation }}</strong></p>
             </li>
         {% endfor %}
