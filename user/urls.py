@@ -15,11 +15,11 @@ urlpatterns = [
     # are routed to the register view function. Naming this URL pattern 'register' allows for easy reference throughout the project.
     path('register/', user_views.register, name='register'),
 
-
     path('login/', user_views.login, name='login'),
     path('logout/', user_views.logout, name='logout'),
-    path('user_info/', user_views.user_info, name='user_info'),
 
+    path('profile', user_views.profile, name='profile'),
+    path('user_info/', user_views.user_info, name='user_info'),
 
     # Define a URL pattern for the '/users/' path. This pattern routes requests to the users view function,
     # which is expected to display a list of users. Like the others, this URL pattern is named ('users')

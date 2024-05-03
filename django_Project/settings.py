@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     # Custom app 'custom_user'
     'user.apps.UserConfig',
     'album.apps.AlbumConfig',
-
+    'friends.apps.FriendsConfig',
 ]
 
 # Middleware is a framework of hooks into Django's request/response processing.
@@ -87,9 +87,9 @@ WSGI_APPLICATION = 'django_Project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',  # Using PostgreSQL database
-        'NAME': 'project2',  # Database name
+        'NAME': 'my_database',  # Database name
         'USER': 'postgres',  # Database user
-        'PASSWORD': 'izahaha#567',  # Database password
+        'PASSWORD': 'password',  # Database password
         'HOST': 'localhost',  # Database host
         'PORT': '5432',  # Database port
     }

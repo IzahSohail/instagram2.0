@@ -12,7 +12,7 @@ import base64
 from PIL import Image
 from io import BytesIO
 from django.contrib.auth.views import LoginView
-from django.contrib import messages
+#from django.contrib import messages
 
 # Decorator to make this view exempt from CSRF token requirement
 @csrf_exempt
@@ -103,6 +103,11 @@ def welcome(request):
         context = { 'user': user, 'success_message': 'Welcome back' }
     # Render the welcome page template
     return render(request, 'user/welcome.html', context)
+
+def profile(request):
+    user = User.objects.get(id=request.session['user_id'])
+    context = { 'user': user }
+    return render(request, 'user/profile.html', context)
 
 def users(request):
     # Query the database for all user instances

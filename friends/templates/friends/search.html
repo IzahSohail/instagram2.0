@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Search For Friends</title>
+  </head>
+  <body>
+    <div>
+      {% if error_message %}
+      <h1>{{error_message}}</h1>
+      {% else %}
+      <h1>Enter your friend's name</h1>
+      {% endif%}
+      <form
+        method="post"
+        action="{% url 'search-friends' %}"
+        enctype="multipart/form-data"
+      >
+        <div>{{ form.as_p }}</div>
+        <button type="submit">Search</button>
+      </form>
+    </div>
+  </body>
+</html>
