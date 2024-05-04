@@ -24,4 +24,5 @@ urlpatterns = [
     # which is expected to display a list of users. Like the others, this URL pattern is named ('users')
     # to facilitate referencing it by name in the project.
     path('users/', user_views.users, name='users'),
+    path('other_user_profile/<int:user_id>/', user_views.other_user_profile, name='other_user_profile'),
 ]

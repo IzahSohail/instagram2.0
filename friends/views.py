@@ -36,3 +36,4 @@ def add(request):
         else:
             friendship = Friends.objects.create(user_a = user, user_b = friend)
             return render(request, 'friends/success.html', {'friend': friend})
+

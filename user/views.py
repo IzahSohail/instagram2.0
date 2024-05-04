@@ -1,5 +1,5 @@
 # Import Django utilities for rendering templates and redirecting URLs
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 # Import the decorator to exempt a view from CSRF verification
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
@@ -107,7 +107,8 @@ def welcome(request):
 
 def users(request):
     # Query the database for all user instances
-    users_data = User.objects.all()
+    users_data = User.objects.exclude(id=request.session['user_id'])
+
 
     # Prepare user data for display, including encoding photos if present
     users_list = []
@@ -119,6 +120,7 @@ def users(request):
 
         # Add user details to the list, including encoded photo data
         users_list.append({
+            'id': user.id,
             'first_name': user.first_name,
             'last_name': user.last_name,
             'email': user.email,
@@ -137,3 +139,11 @@ def user_info(request):
     albums = Album.objects.filter(user=user)
     # Render the user info template, passing in the user instance and encoded photo data
     return render(request, 'user/user_info.html', {'user': user, 'albums': albums, 'friends': friends})
+
+#define a view to browse another users profile
+def other_user_profile(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    albums = Album.objects.filter(user=user)
+
+    # Implement additional logic as needed, such as fetching user-related data
+    return render(request, 'user/other_user_profile.html', {'user': user, 'albums': albums})
