@@ -14,6 +14,6 @@ urlpatterns = [
     # This means that every URL under the 'register' app will be accessible from the root of the site.
     # For example, if 'register' has a URL pattern named 'profile', it will be accessible as '/profile/'.
     path('', include('user.urls')),
-    path('profile/', include('album.urls')),
-    path('profile/', include('friends.urls')),
+    path('user_info/', include('album.urls')),
+    path('user_info/', include('friends.urls')),
 ]

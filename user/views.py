@@ -7,6 +7,7 @@ from django.contrib import messages
 from .forms import UserRegistrationForm, UserLoginForm
 from .models import User
 from album.models import Album
+from friends.models import Friends
 # Import base64 for encoding and the Python Imaging Library (PIL) for image processing
 import base64
 from PIL import Image
@@ -104,11 +105,6 @@ def welcome(request):
     # Render the welcome page template
     return render(request, 'user/welcome.html', context)
 
-def profile(request):
-    user = User.objects.get(id=request.session['user_id'])
-    context = { 'user': user }
-    return render(request, 'user/profile.html', context)
-
 def users(request):
     # Query the database for all user instances
     users_data = User.objects.all()
@@ -135,9 +131,9 @@ def users(request):
 def user_info(request):
     # Fetch the user instance using the session data
     user = User.objects.get(id=request.session['user_id'])
-
+    #get the user's friends
+    friends = Friends.objects.filter( user_a = user )
     #get the album based on the user
     albums = Album.objects.filter(user=user)
-
     # Render the user info template, passing in the user instance and encoded photo data
-    return render(request, 'user/user_info.html', {'user': user, 'albums': albums})
+    return render(request, 'user/user_info.html', {'user': user, 'albums': albums, 'friends': friends})

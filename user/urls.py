@@ -18,7 +18,6 @@ urlpatterns = [
     path('login/', user_views.login, name='login'),
     path('logout/', user_views.logout, name='logout'),
 
-    path('profile', user_views.profile, name='profile'),
     path('user_info/', user_views.user_info, name='user_info'),
 
     # Define a URL pattern for the '/users/' path. This pattern routes requests to the users view function,

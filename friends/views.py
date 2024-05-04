@@ -5,12 +5,6 @@ from user.models import User
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 
-def friends(request):
-    user = User.objects.get(id=request.session['user_id'])
-    friends = Friends.objects.filter( user_a = user )
-    context = { 'friends': friends }
-    return render(request, 'friends/friends.html', context)
-
 @csrf_exempt
 def search(request):
     if request.method == 'POST':
