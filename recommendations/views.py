@@ -15,9 +15,9 @@ def friend_recommendations(request):
         WHERE    F.user_a_id = {}
     ),
     friends_of_friends AS (
-        (SELECT   F.user_b_id
+         SELECT   F.user_b_id
          FROM     FRIENDS_FRIENDS AS F
-         WHERE    F.user_a_id IN (SELECT user_b_id FROM friends_of_user) AND F.user_b_id NOT IN (SELECT user_b_id FROM friends_of_user))
+         WHERE    F.user_a_id IN (SELECT user_b_id FROM friends_of_user) AND F.user_b_id NOT IN ((SELECT user_b_id FROM friends_of_user) UNION SELECT {} AS user_b_id)
     )
     SELECT          B.user_b_id, COUNT(B.user_b_id) AS mutual_friends
     FROM            friends_of_friends AS B
