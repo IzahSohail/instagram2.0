@@ -83,3 +83,17 @@ def browse_album(request, album_id):
 
 
     return render(request, 'album/browse_album.html', {'album': album, 'photos': photos, 'comments': comments , 'form': CommentForm()})
+
+
+def delete_photo(request, photo_id):
+    photo = get_object_or_404(Photo, photo_id=photo_id)
+    album_id = photo.album.album_id
+    photo.delete()
+    return redirect('view_album', album_id=album_id)
+
+def delete_album(request, album_id):
+    # Retrieve the album using the primary key 'id'
+    album = get_object_or_404(Album, album_id=album_id)
+    album.delete()
+    # Redirect to the 'user_info' view assuming it's correctly defined in your urls.py
+    return redirect('user_info')

@@ -37,9 +37,13 @@
         >
         <p>Date of creation: <strong>{{ album.date_of_creation }}</strong></p>
       </li>
+      <a href="/delete_album/{{ album.album_id }}">Delete Album</a></br>
+    </br>
       {% endfor %}
     </ol>
     <a href="/create_album">Create a New Album</a>
+  </br>
+  
 
     <h2>Your friends</h2>
     <div>

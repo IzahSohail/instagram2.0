@@ -12,7 +12,10 @@ def add_comment_to_photo(request, photo_id):
         comment = form.save(commit=False)
         comment.comment_text = form.cleaned_data['comment_text']
         comment.photo_id = photo.photo_id
-        comment.user = User.objects.get(id=request.session['user_id'])
+        if 'user_id' in request.session:
+            comment.user = User.objects.get(id=request.session['user_id'])
+        else: #set user to null if not logged in
+            comment.user = None
         comment.save()
         #trigger browse_album view
         return redirect(f'/browse_album/{album_id}/')

@@ -19,7 +19,11 @@
                 {% for comment in comments %}
                 {% if comment.photo_id == photo.photo_id %}
                 <p>{{ comment.comment_text }}</p>
-                <p>By: {{comment.user}}</p>
+                <p>By: {% if comment.user_id == None %}
+                    Anonymous
+                    {% else %}
+                    {{ comment.user.first_name }}
+                    {% endif %}
                 {% endif %}
                 {% endfor %}
     
@@ -35,5 +39,5 @@
     </br>
         {% endfor %}
 
-    
+    <a href="/">Back to home</a>
 </html>

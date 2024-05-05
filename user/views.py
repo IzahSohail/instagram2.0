@@ -106,15 +106,20 @@ def welcome(request):
     return render(request, 'user/welcome.html', context)
 
 def users(request):
-    # Query the database for all user instances
-    users_data = User.objects.exclude(id=request.session['user_id'])
-
+    # Check if the user is logged in by checking for 'user_id' in session
+    if 'user_id' in request.session:
+        user_id = request.session['user_id']
+        # Exclude the logged-in user from the list
+        users_data = User.objects.exclude(id=user_id)
+    else:
+        # If no user is logged in, simply display all users
+        users_data = User.objects.all()
 
     # Prepare user data for display, including encoding photos if present
     users_list = []
     for user in users_data:
-        # Encode each user's photo in base64, if available
-        photo_data = user.photo if user.photo else None
+        # Check if photo exists and encode if present
+        photo_data = user.photo if hasattr(user, 'photo') and user.photo else None
         encoded_photo = base64.b64encode(photo_data).decode('utf-8') if photo_data else None
         photo_src = f"data:image/*;base64,{encoded_photo}" if encoded_photo else None
 
