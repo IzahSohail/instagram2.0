@@ -16,4 +16,5 @@ urlpatterns = [
     path('', include('user.urls')),
     path('user_info/', include('album.urls')),
     path('user_info/', include('friends.urls')),
+    path('user_info/', include('recommendations.urls')),
 ]

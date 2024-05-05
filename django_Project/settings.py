@@ -34,10 +34,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',  # Session framework
     'django.contrib.messages',  # Messaging framework
     'django.contrib.staticfiles',  # Managing static files (CSS, images)
-    # Custom app 'custom_user'
     'user.apps.UserConfig',
     'album.apps.AlbumConfig',
     'friends.apps.FriendsConfig',
+    'recommendations.apps.RecommendationsConfig',
 ]
 
 # Middleware is a framework of hooks into Django's request/response processing.

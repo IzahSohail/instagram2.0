@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Friends</title>
+  </head>
+  <body>
+    <div>
+      {% for recommendation in recommendations %}
+      <!-- Individual container for each user's information -->
+      <div>
+        <!-- Display the user's first and last name -->
+        <h2>
+          {{ recommendation.user.first_name }} {{recommendation.user.last_name}}
+        </h2>
+        <p>
+          Mutual friends:
+          <strong>{{recommendation.mutual_friends_count}}</strong>
+        </p>
+        <!-- Conditional to check if the user has a photo -->
+        {% if recommendation.user.photo_src %}
+        <!-- If a photo is available, display it with a fixed height of 100 pixels -->
+        <img
+          src="{{ user.photo_src }}"
+          alt="User Photo"
+          style="height: 100px"
+        />
+        {% else %}
+        <!-- If no photo is available, display a message indicating so -->
+        <p>No photo provided.</p>
+        {% endif %}
+        <form
+          method="post"
+          action="{% url 'add-friends' %}"
+          enctype="multipart/form-data"
+        >
+          <input
+            type="hidden"
+            name="friend_id"
+            value="{{ recommendation.user.id }}"
+          />
+          <button type="submit">Add Friend</button>
+        </form>
+      </div>
+      {% endfor %}
+    </div>
+  </body>
+</html>
