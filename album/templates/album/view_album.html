@@ -9,28 +9,25 @@
     <p>Date: {{ album.date_of_creation }}</p>
     <p>Owner: {{ album.user }}</p>
     <p>Photos:</p>
-
-        <ul>
             {% for photo_tag_map in photo_tag_maps %}
-            <li>
+        </br>
                 <img src="{{ photo_tag_map.photo.photo_data }}" alt="Photo">
-                <p>{{ photo_tag_map.photo.caption }}</p>
+                <p><b>{{ photo_tag_map.photo.caption }}</b></p>
 
                 {% for tag in photo_tag_map.tags %}
-                    <a href = '#'>{{tag.description}}</a>
-                {% endfor %}
-                <br>
-                <br>     
-                <a href="{% url 'delete_photo' photo_tag_map.photo.photo_id %}">Delete Photo</a>
-            </br>
-            </li>
+                <b>Tags:</b>
+                    <a href = '#'>{{tag.description}}</a> </br>
+                {% endfor %} </br>
+    
+   
+                <a href="{% url 'delete_photo' photo_tag_map.photo.photo_id %}">Delete Photo</a> </br>
             {% endfor %}
-        </ul>
         
 
     <!--Option to upload photos to the album with option to add caption-->
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
+    </br>
         <input type="file" name="photo">
         <button type="submit">Upload Photo</button> </br> </br>
         <textarea name="caption" placeholder="Add a caption"></textarea>

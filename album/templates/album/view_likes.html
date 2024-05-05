@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Liked by</title>
+</head>
+<body>
+    <h1>Liked by</h1>
+    <p>Photo: {{ photo.caption }}</p>
+    <p>Liked by:</p>
+    <ul>
+        {% for like in likes %}
+        <li>
+
+            {{ like.user.first_name }}
+
+        </li>
+        {% endfor %}
+    </ul>
+    <a href="/browse_album/{{ photo.album_id }}">Back to album</a>
+
+</html>
