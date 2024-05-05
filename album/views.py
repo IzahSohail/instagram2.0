@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 
 # Create your views here.
 from .models import Album, Photo
+from tags.models import Tag, PhotoTagMapping
 from user.models import User
 
 from .forms import createAlbumForm
@@ -53,20 +54,43 @@ def view_album(request, album_id):
         photo = Photo(photo_data=photo_data, caption=caption, album=album)
         photo.save()
 
+
+        tags = request.POST.get('tags', '')
+        tags_array = tags.split()  # Split the tags string based on whitespace and store the result in an array
+
+        for tag_description in tags_array:                                      #for every tag in tags_array
+            if not (Tag.objects.filter(description=tag_description).exists()):  #check if that tag already exists
+                new_tag = Tag(description = tag_description)                    #if not, then make that tag
+                new_tag.save()
+                photo_tag_mapping = PhotoTagMapping(tag=new_tag, photo=photo)   #then make the photo-tag mapping
+                photo_tag_mapping.save()
+                continue
+            tag = Tag.objects.get(description=tag_description)
+            photo_tag_mapping = PhotoTagMapping(tag=tag, photo=photo)
+            photo_tag_mapping.save()
+
         # Redirect to the same album view to see the uploaded photo
         return redirect('view_album', album_id=album_id)
     
     else:
         # Prepare photos data for display
         photos = Photo.objects.filter(album=album)
-
+        photo_tag_maps=[]
         for photo in photos:
             encoded_photo = base64.b64encode(photo.photo_data).decode('utf-8')
             photo_src = f"data:image/*;base64,{encoded_photo}"
             photo.photo_data = photo_src
 
+            #preparing them tags
+            photo_tag_map = PhotoTagMapping.objects.filter(photo=photo)
+            tags=[]
+            for mapping in photo_tag_map:   #perhaps i did it in an unnecassarily complicated way
+                tags.append(mapping.tag)    #but idk how else to extract tags, it's not that straightforward
 
-        return render(request, 'album/view_album.html', {'album': album, 'photos': photos})
+            photo_tag_dict = {'photo': photo, 'tags': tags}
+            photo_tag_maps.append(photo_tag_dict)
+
+        return render(request, 'album/view_album.html', {'album': album, 'photo_tag_maps': photo_tag_maps})
 
 
 #define a view for other people to browse through your albums but not add to it

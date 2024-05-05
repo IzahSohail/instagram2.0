@@ -7,7 +7,7 @@ class Friends(models.Model):
     user_a = models.ForeignKey('user.User', on_delete=models.CASCADE, related_name = 'friend_a')
     user_b = models.ForeignKey('user.User', on_delete=models.CASCADE, related_name = 'friend_b')
     
-    # Defining a primary
+    # Defining a unique constraint
     class Meta:
         constraints = [
             UniqueConstraint(fields=['user_a', 'user_b'], name='unique_friendship')

@@ -11,11 +11,17 @@
     <p>Photos:</p>
 
         <ul>
-            {% for photo in photos %}
+            {% for photo_tag_map in photo_tag_maps %}
             <li>
-                <img src="{{ photo.photo_data }}" alt="Photo">
-                <p>{{ photo.caption }}</p>
-                <a href="{% url 'delete_photo' photo.photo_id %}">Delete Photo</a>
+                <img src="{{ photo_tag_map.photo.photo_data }}" alt="Photo">
+                <p>{{ photo_tag_map.photo.caption }}</p>
+
+                {% for tag in photo_tag_map.tags %}
+                    <a href = '#'>{{tag.description}}</a>
+                {% endfor %}
+                <br>
+                <br>     
+                <a href="{% url 'delete_photo' photo_tag_map.photo.photo_id %}">Delete Photo</a>
             </br>
             </li>
             {% endfor %}
@@ -28,6 +34,7 @@
         <input type="file" name="photo">
         <button type="submit">Upload Photo</button> </br> </br>
         <textarea name="caption" placeholder="Add a caption"></textarea>
+        <textarea name="tags" placeholder="Add tags"></textarea>
     </form>
 </br>
 

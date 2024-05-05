@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'friends.apps.FriendsConfig',
     'recommendations.apps.RecommendationsConfig',
     'comments.apps.CommentsConfig',
+    'tags.apps.TagsConfig',
 ]
 
 # Middleware is a framework of hooks into Django's request/response processing.
