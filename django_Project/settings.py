@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'album.apps.AlbumConfig',
     'friends.apps.FriendsConfig',
     'recommendations.apps.RecommendationsConfig',
+    'comments.apps.CommentsConfig',
 ]
 
 # Middleware is a framework of hooks into Django's request/response processing.
@@ -87,9 +88,9 @@ WSGI_APPLICATION = 'django_Project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',  # Using PostgreSQL database
-        'NAME': 'my_database',  # Database name
+        'NAME': 'project2',  # Database name
         'USER': 'postgres',  # Database user
-        'PASSWORD': 'password',  # Database password
+        'PASSWORD': 'izahaha#567',  # Database password
         'HOST': 'localhost',  # Database host
         'PORT': '5432',  # Database port
     }

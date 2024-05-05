@@ -10,4 +10,7 @@ urlpatterns = [
     path('create_album/', views.create_album, name='create_album'),
     # The path to the view_album view function, which takes an album_id as an argument
     path('view_album/<int:album_id>/', views.view_album, name='view_album'),
+    path('browse_album/<int:album_id>/', views.browse_album, name='browse_album'),
+    path('delete_photo/<int:photo_id>/', views.delete_photo, name='delete_photo'),
+    path('delete_album/<int:album_id>/', views.delete_album, name='delete_album'),
 ]

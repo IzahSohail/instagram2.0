@@ -5,6 +5,8 @@ from .models import Album, Photo
 from user.models import User
 
 from .forms import createAlbumForm
+from comments.forms import CommentForm
+from comments.models import Comment
 
 import base64
 from PIL import Image
@@ -67,3 +69,31 @@ def view_album(request, album_id):
         return render(request, 'album/view_album.html', {'album': album, 'photos': photos})
 
 
+#define a view for other people to browse through your albums but not add to it
+def browse_album(request, album_id):
+    
+    album = get_object_or_404(Album, album_id=album_id)
+    photos = Photo.objects.filter(album=album)
+    comments = Comment.objects.all()
+
+    for photo in photos:
+        encoded_photo = base64.b64encode(photo.photo_data).decode('utf-8')
+        photo_src = f"data:image/*;base64,{encoded_photo}"
+        photo.photo_data = photo_src
+
+
+    return render(request, 'album/browse_album.html', {'album': album, 'photos': photos, 'comments': comments , 'form': CommentForm()})
+
+
+def delete_photo(request, photo_id):
+    photo = get_object_or_404(Photo, photo_id=photo_id)
+    album_id = photo.album.album_id
+    photo.delete()
+    return redirect('view_album', album_id=album_id)
+
+def delete_album(request, album_id):
+    # Retrieve the album using the primary key 'id'
+    album = get_object_or_404(Album, album_id=album_id)
+    album.delete()
+    # Redirect to the 'user_info' view assuming it's correctly defined in your urls.py
+    return redirect('user_info')

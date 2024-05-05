@@ -23,7 +23,7 @@
             <!-- Individual container for each user's information -->
             <div>
                 <!-- Display the user's first and last name -->
-                <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+                <a href="{% url 'other_user_profile' user.id %}"><h2>{{ user.first_name }} {{ user.last_name }}</h2></a>
                 <!-- Display the user's email address -->
                 <p>Email: {{ user.email }}</p>
 

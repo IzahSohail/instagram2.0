@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>View Album</title>
+</head>
+<body>
+    <h1>View Album</h1>
+    <p>Name: {{ album.album_name }}</p>
+    <p>Date: {{ album.date_of_creation }}</p>
+    <p>Owner: {{ album.user }}</p>
+    <p>Photos:</p>
+    <ul>
+        <ul>
+            {% for photo in photos %}
+            <li>
+                <img src="{{ photo.photo_data }}" alt="Photo">
+                <p>Caption: {{ photo.caption }}</p>
+                <p> Comments: </p>
+                {% for comment in comments %}
+                {% if comment.photo_id == photo.photo_id %}
+                <p>{{ comment.comment_text }}</p>
+                <p>By: {% if comment.user_id == None %}
+                    Anonymous
+                    {% else %}
+                    {{ comment.user.first_name }}
+                    {% endif %}
+                {% endif %}
+                {% endfor %}
+    
+            </li>
+
+            <form method="post" action="/comment/add_comment_to_photo/{{ photo.photo_id }}/">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <button type="submit">Add a new comment</button>
+        </form>
+        </ul>
+    </br>
+        {% endfor %}
+
+    <a href="/">Back to home</a>
+</html>

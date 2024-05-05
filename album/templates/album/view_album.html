@@ -9,12 +9,14 @@
     <p>Date: {{ album.date_of_creation }}</p>
     <p>Owner: {{ album.user }}</p>
     <p>Photos:</p>
-    <ul>
+
         <ul>
             {% for photo in photos %}
             <li>
                 <img src="{{ photo.photo_data }}" alt="Photo">
                 <p>{{ photo.caption }}</p>
+                <a href="{% url 'delete_photo' photo.photo_id %}">Delete Photo</a>
+            </br>
             </li>
             {% endfor %}
         </ul>
@@ -27,6 +29,9 @@
         <button type="submit">Upload Photo</button> </br> </br>
         <textarea name="caption" placeholder="Add a caption"></textarea>
     </form>
+</br>
+
+    <a href="/">Back to Home</a>
 
     
 </html>

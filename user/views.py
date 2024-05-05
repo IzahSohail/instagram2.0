@@ -1,5 +1,5 @@
 # Import Django utilities for rendering templates and redirecting URLs
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 # Import the decorator to exempt a view from CSRF verification
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
@@ -106,19 +106,26 @@ def welcome(request):
     return render(request, 'user/welcome.html', context)
 
 def users(request):
-    # Query the database for all user instances
-    users_data = User.objects.all()
+    # Check if the user is logged in by checking for 'user_id' in session
+    if 'user_id' in request.session:
+        user_id = request.session['user_id']
+        # Exclude the logged-in user from the list
+        users_data = User.objects.exclude(id=user_id)
+    else:
+        # If no user is logged in, simply display all users
+        users_data = User.objects.all()
 
     # Prepare user data for display, including encoding photos if present
     users_list = []
     for user in users_data:
-        # Encode each user's photo in base64, if available
-        photo_data = user.photo if user.photo else None
+        # Check if photo exists and encode if present
+        photo_data = user.photo if hasattr(user, 'photo') and user.photo else None
         encoded_photo = base64.b64encode(photo_data).decode('utf-8') if photo_data else None
         photo_src = f"data:image/*;base64,{encoded_photo}" if encoded_photo else None
 
         # Add user details to the list, including encoded photo data
         users_list.append({
+            'id': user.id,
             'first_name': user.first_name,
             'last_name': user.last_name,
             'email': user.email,
@@ -137,3 +144,11 @@ def user_info(request):
     albums = Album.objects.filter(user=user)
     # Render the user info template, passing in the user instance and encoded photo data
     return render(request, 'user/user_info.html', {'user': user, 'albums': albums, 'friends': friends})
+
+#define a view to browse another users profile
+def other_user_profile(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    albums = Album.objects.filter(user=user)
+
+    # Implement additional logic as needed, such as fetching user-related data
+    return render(request, 'user/other_user_profile.html', {'user': user, 'albums': albums})
