@@ -99,14 +99,24 @@ def browse_album(request, album_id):
     album = get_object_or_404(Album, album_id=album_id)
     photos = Photo.objects.filter(album=album)
     comments = Comment.objects.all()
+    photo_tag_maps=[]
 
     for photo in photos:
         encoded_photo = base64.b64encode(photo.photo_data).decode('utf-8')
         photo_src = f"data:image/*;base64,{encoded_photo}"
         photo.photo_data = photo_src
 
+        #preparing them tags
+        photo_tag_map = PhotoTagMapping.objects.filter(photo=photo)
+        tags=[]
+        for mapping in photo_tag_map:   #perhaps i did it in an unnecassarily complicated way
+            tags.append(mapping.tag)    #but idk how else to extract tags, it's not that straightforward
 
-    return render(request, 'album/browse_album.html', {'album': album, 'photos': photos, 'comments': comments , 'form': CommentForm()})
+        photo_tag_dict = {'photo': photo, 'tags': tags}
+        photo_tag_maps.append(photo_tag_dict)
+
+
+    return render(request, 'album/browse_album.html', {'album': album, 'photo_tag_maps': photo_tag_maps, 'comments': comments, 'form': CommentForm()})
 
 
 def delete_photo(request, photo_id):

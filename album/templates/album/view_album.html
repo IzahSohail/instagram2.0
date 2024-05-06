@@ -17,7 +17,7 @@
                 <p>{{ photo_tag_map.photo.caption }}</p>
 
                 {% for tag in photo_tag_map.tags %}
-                    <a href = '#'>{{tag.description}}</a>
+                    <a href = '#'>{{tag.description}}</a>   <!-- THIS SHOULDN'T BE AN # href. it should lead to the photos of that tag. -->
                 {% endfor %}
                 <br>
                 <br>     
