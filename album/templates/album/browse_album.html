@@ -17,7 +17,11 @@
             {% for photo in photos %}
                 <article>
                     <img src="{{ photo.photo_data }}" alt="Photo" style="width:100%; max-width: 300px; height: auto;">
-                    <h3>{{ photo.caption }}</h3>
+                    <p><b>Caption: </b>{{ photo.caption }}</p>
+                    <b>Tags:</b>
+                    {% for tag in photo.tags %}
+                        <a href = '#'>{{tag.description}}</a>
+                    {% endfor %} </br> <br>
                     <a href="/like_photo/{{ photo.photo_id }}/">Like</a> |
                     <a href="/view_likes/{{ photo.photo_id }}">{{ photo.total_likes }} Likes</a>
 
