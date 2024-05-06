@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Photo Sharing App</title>
+  </head>
+  <body>
+    <h1>Top Ten Users</h1>
+    <p>Check out our top ten users below:</p>
+    <ul>
+      {% for user in top_users %}
+      <li><a href="/other_user_profile/{{user.user.id}}">{{ user.user.first_name }} </a></li>
+      {% endfor %}
+    </ul>
+    <a href="/">Back to Home</a>
+  </body>

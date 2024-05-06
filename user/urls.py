@@ -25,4 +25,5 @@ urlpatterns = [
     # to facilitate referencing it by name in the project.
     path('users/', user_views.users, name='users'),
     path('other_user_profile/<int:user_id>/', user_views.other_user_profile, name='other_user_profile'),
+    path('top_ten_users/', user_views.top_ten_users, name='top_ten_users'),
 ]

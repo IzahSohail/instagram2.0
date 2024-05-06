@@ -2,12 +2,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
 # Import the decorator to exempt a view from CSRF verification
 from django.views.decorators.csrf import csrf_exempt
+from django.db import connection
 from django.contrib import messages
 # Import the form and model related to user registration
 from .forms import UserRegistrationForm, UserLoginForm
 from .models import User
-from album.models import Album
+from album.models import Album, Photo
 from friends.models import Friends
+from comments.models import Comment
 # Import base64 for encoding and the Python Imaging Library (PIL) for image processing
 import base64
 from PIL import Image
@@ -152,3 +154,34 @@ def other_user_profile(request, user_id):
 
     # Implement additional logic as needed, such as fetching user-related data
     return render(request, 'user/other_user_profile.html', {'user': user, 'albums': albums})
+
+#defining a view that allows users to see the top 10 users on the site
+def top_ten_users(request):
+   
+    #raw SQL query to get the top 10 users
+    raw_query = """ 
+    SELECT U.id, (SELECT COUNT(*) FROM comments_comment as C WHERE C.user_id = U.id) + (SELECT COUNT(*) FROM album_photo as P, album_album as A WHERE A.album_id = P.album_id AND A.user_id = U.id) AS score
+    FROM user_user as U
+    ORDER BY score DESC
+    LIMIT 10;
+
+    """.format(request.session['user_id'])
+
+    #execute the raw SQL query
+    with connection.cursor() as cursor:
+        cursor.execute(raw_query)
+        rows = cursor.fetchall()
+
+    #process the results
+    top_users = []
+    for row in rows:
+        user_id, score = row
+        user = User.objects.get(id=user_id)
+        top_user = {'user': user, 'score': score}
+        top_users.append(top_user)
+
+    return render(request, 'user/top_ten_users.html', {'top_users': top_users})
+
+
+
+
