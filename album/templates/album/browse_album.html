@@ -1,50 +1,52 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>View Album</title>
+    <meta charset="UTF-8">
+    <title>View Album: {{ album.album_name }}</title>
 </head>
 <body>
-    <h1>View Album</h1>
-    <p>Name: {{ album.album_name }}</p>
-    <p>Date: {{ album.date_of_creation }}</p>
-    <p>Owner: {{ album.user }}</p>
-    <p>Photos:</p>
-    <ul>
-        <ul>
-            {% for photo_tag_map in photo_tag_maps %}
-            <li>
-                <img src="{{ photo_tag_map.photo.photo_data }}" alt="Photo">
-                <p>Caption: {{ photo_tag_map.photo.caption }}</p>
+    <header>
+        <h1>View Album: {{ album.album_name }}</h1>
+        <p><strong>Date Created:</strong> {{ album.date_of_creation }}</p>
+        <p><strong>Owner:</strong> {{ album.user }}</p>
+    </header>
 
-                <p>Tags: {% for tag in photo_tag_map.tags %}</p>
-                            <a href = '#'>{{tag.description}}</a>   <!-- THIS SHOULDN'T BE AN # href. it should lead to the photos of that tag. -->
-                         {% endfor %}
-                <br>
-                <br>     
+    <main>
+        <section>
+            <h2>Photos</h2>
+            {% for photo in photos %}
+                <article>
+                    <img src="{{ photo.photo_data }}" alt="Photo" style="width:100%; max-width: 300px; height: auto;">
+                    <h3>{{ photo.caption }}</h3>
+                    <a href="/like_photo/{{ photo.photo_id }}/">Like</a> |
+                    <a href="/view_likes/{{ photo.photo_id }}">{{ photo.total_likes }} Likes</a>
 
-                <p> Comments: </p>
-                {% for comment in comments %}
-                {% if comment.photo_id == photo_tag_map.photo.photo_id %}
-                <p>{{ comment.comment_text }}</p>
-                <p>By: {% if comment.user_id == None %}
-                    Anonymous
-                    {% else %}
-                    {{ comment.user.first_name }}
-                    {% endif %}
-                {% endif %}
-                {% endfor %}
-    
-            </li>
+                    <section>
+                        <h4>Comments</h4>
+                        {% for comment in comments %}
+                            {% if comment.photo_id == photo.photo_id %}
+                                <p>{{ comment.comment_text }} - <strong>{% if comment.user_id %}
+                                    {{ comment.user.first_name }}
+                                    {% else %}
+                                    Anonymous
+                                    {% endif %}
+                                </strong></p>
+                            {% endif %}
+                        {% endfor %}
+                        <form method="post" action="/comment/add_comment_to_photo/{{ photo.photo_id }}/">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <button type="submit">Add a new comment</button>
+                        </form>
+                    </section>
+                </article>
+            {% endfor %}
+        </section>
+    </main>
 
-            <form method="post" action="/comment/add_comment_to_photo/{{ photo_tag_map.photo.photo_id }}/">
-            {% csrf_token %}
-            {{ form.as_p }}
-
-            <button type="submit">Add a new comment</button>
-        </form>
-        </ul>
+    <footer>
     </br>
-        {% endfor %}
-
-    <a href="/">Back to home</a>
+        <a href="/">Back to home</a>
+    </footer>
+</body>
 </html>

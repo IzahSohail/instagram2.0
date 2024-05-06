@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 
 # Create your views here.
-from .models import Album, Photo
+from .models import Album, Photo, Photo_likes
 from tags.models import Tag, PhotoTagMapping
 from user.models import User
 
@@ -101,23 +101,26 @@ def browse_album(request, album_id):
     comments = Comment.objects.all()
     photo_tag_maps=[]
 
+
+    photos_data = []
     for photo in photos:
         encoded_photo = base64.b64encode(photo.photo_data).decode('utf-8')
         photo_src = f"data:image/*;base64,{encoded_photo}"
-        photo.photo_data = photo_src
+        # Count likes for each photo
+        total_likes = Photo_likes.objects.filter(photo=photo).count()
+        photos_data.append({
+            'photo_id': photo.photo_id, 
+            'photo_data': photo_src,
+            'caption': photo.caption,
+            'total_likes': total_likes
+        })
 
-        #preparing them tags
-        photo_tag_map = PhotoTagMapping.objects.filter(photo=photo)
-        tags=[]
-        for mapping in photo_tag_map:   #perhaps i did it in an unnecassarily complicated way
-            tags.append(mapping.tag)    #but idk how else to extract tags, it's not that straightforward
-
-        photo_tag_dict = {'photo': photo, 'tags': tags}
-        photo_tag_maps.append(photo_tag_dict)
-
-
-    return render(request, 'album/browse_album.html', {'album': album, 'photo_tag_maps': photo_tag_maps, 'comments': comments, 'form': CommentForm()})
-
+    return render(request, 'album/browse_album.html', {
+        'album': album,
+        'photos': photos_data,  # Pass the structured list
+        'comments': comments,
+        'form': CommentForm()
+    })
 
 def delete_photo(request, photo_id):
     photo = get_object_or_404(Photo, photo_id=photo_id)
@@ -131,3 +134,20 @@ def delete_album(request, album_id):
     album.delete()
     # Redirect to the 'user_info' view assuming it's correctly defined in your urls.py
     return redirect('user_info')
+
+def like_photo(request, photo_id):
+    photo = get_object_or_404(Photo, photo_id=photo_id)
+    user = User.objects.get(id=request.session['user_id'])
+    #ensure that user has not already liked the photo
+    if Photo_likes.objects.filter(photo=photo, user=user).exists():
+        return redirect('browse_album', album_id=photo.album.album_id)
+    else:
+        photo_like = Photo_likes(photo=photo, user=user)
+        photo_like.save()
+        return redirect('browse_album', album_id=photo.album.album_id)
+
+#view to show list of who has liked a specific photo
+def view_likes(request, photo_id):
+    photo = get_object_or_404(Photo, photo_id=photo_id)
+    likes = Photo_likes.objects.filter(photo=photo)
+    return render(request, 'album/view_likes.html', {'photo': photo, 'likes': likes})

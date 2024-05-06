@@ -21,3 +21,12 @@ class Photo(models.Model):
 
     def __str__(self):
         return self.caption
+    
+
+
+class Photo_likes(models.Model):
+    photo = models.ForeignKey(Photo, on_delete=models.CASCADE)
+    user = models.ForeignKey('user.User', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.user.username + " likes " + self.photo.caption
