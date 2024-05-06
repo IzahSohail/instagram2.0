@@ -99,7 +99,8 @@ def browse_album(request, album_id):
     album = get_object_or_404(Album, album_id=album_id)
     photos = Photo.objects.filter(album=album)
     comments = Comment.objects.all()
-    
+    photo_tag_maps=[]
+
 
     photos_data = []
     for photo in photos:
@@ -107,11 +108,18 @@ def browse_album(request, album_id):
         photo_src = f"data:image/*;base64,{encoded_photo}"
         # Count likes for each photo
         total_likes = Photo_likes.objects.filter(photo=photo).count()
+        #preparing them tags
+        photo_tag_map = PhotoTagMapping.objects.filter(photo=photo)
+        tags=[]
+        for mapping in photo_tag_map:   #perhaps i did it in an unnecassarily complicated way
+            tags.append(mapping.tag)    #but idk how else to extract tags, it's not that straightforward
+            
         photos_data.append({
             'photo_id': photo.photo_id, 
             'photo_data': photo_src,
             'caption': photo.caption,
-            'total_likes': total_likes
+            'total_likes': total_likes,
+            'tags': tags
         })
 
     return render(request, 'album/browse_album.html', {

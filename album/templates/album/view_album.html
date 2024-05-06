@@ -12,12 +12,11 @@
             {% for photo_tag_map in photo_tag_maps %}
         </br>
                 <img src="{{ photo_tag_map.photo.photo_data }}" alt="Photo">
-                <p><b>{{ photo_tag_map.photo.caption }}</b></p>
-
-                {% for tag in photo_tag_map.tags %}
+                <p><b>Caption: </b>{{ photo_tag_map.photo.caption }}</p>
                 <b>Tags:</b>
-                    <a href = '#'>{{tag.description}}</a> </br>
-                {% endfor %} </br>
+                {% for tag in photo_tag_map.tags %}
+                    <a href = '#'>{{tag.description}}</a>
+                {% endfor %} </br> <br>
     
    
                 <a href="{% url 'delete_photo' photo_tag_map.photo.photo_id %}">Delete Photo</a> </br>
