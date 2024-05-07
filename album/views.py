@@ -98,7 +98,6 @@ def browse_album(request, album_id):
     
     album = get_object_or_404(Album, album_id=album_id)
     photos = Photo.objects.filter(album=album)
-    comments = Comment.objects.all()
     photo_tag_maps=[]
 
 
@@ -114,18 +113,20 @@ def browse_album(request, album_id):
         for mapping in photo_tag_map:   #perhaps i did it in an unnecassarily complicated way
             tags.append(mapping.tag)    #but idk how else to extract tags, it's not that straightforward
             
+        comments = Comment.objects.filter(photo=photo)
+
         photos_data.append({
             'photo_id': photo.photo_id, 
             'photo_data': photo_src,
             'caption': photo.caption,
             'total_likes': total_likes,
+            'comments': comments,
             'tags': tags
         })
 
     return render(request, 'album/browse_album.html', {
         'album': album,
         'photos': photos_data,  # Pass the structured list
-        'comments': comments,
         'form': CommentForm()
     })
 

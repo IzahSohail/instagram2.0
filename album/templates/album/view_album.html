@@ -15,9 +15,8 @@
                 <p><b>Caption: </b>{{ photo_tag_map.photo.caption }}</p>
                 <b>Tags:</b>
                 {% for tag in photo_tag_map.tags %}
-                    <a href = '#'>{{tag.description}}</a>
+                    <a href = "{% url 'my_tags' tag.tag_id %}">{{tag.description}}</a>
                 {% endfor %} </br> <br>
-    
    
                 <a href="{% url 'delete_photo' photo_tag_map.photo.photo_id %}">Delete Photo</a> </br>
             {% endfor %}

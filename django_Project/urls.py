@@ -15,6 +15,7 @@ urlpatterns = [
     # For example, if 'register' has a URL pattern named 'profile', it will be accessible as '/profile/'.
     path('', include('user.urls')),
     path('', include('album.urls')),
+    path('view_album/', include('tags.urls')),
     path('user_info/', include('friends.urls')),
     path('user_info/', include('recommendations.urls')),
     path('comment/', include('comments.urls')),
