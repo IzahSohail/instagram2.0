@@ -190,6 +190,3 @@ def top_ten_users(request):
 
     return render(request, 'user/top_ten_users.html', {'top_users': top_users, 'is_logged_in': is_logged_in})
 
-
-
-
