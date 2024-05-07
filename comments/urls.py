@@ -8,5 +8,6 @@ from . import views
 urlpatterns = [
     # The path to the create_album view function
     path('add_comment_to_photo/<int:photo_id>/', views.add_comment_to_photo, name='add_comment_to_photo'),
+    path('comments_search/', views.comments_search, name='comments_search'),
 ]
 

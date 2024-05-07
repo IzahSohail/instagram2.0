@@ -157,6 +157,13 @@ def other_user_profile(request, user_id):
 
 #defining a view that allows users to see the top 10 users on the site
 def top_ten_users(request):
+
+    #set a variable to track if user is logged in
+    is_logged_in = False
+
+    #check if user is logged in
+    if 'user_id' in request.session:
+        is_logged_in = True
    
     #raw SQL query to get the top 10 users
     raw_query = """ 
@@ -165,7 +172,7 @@ def top_ten_users(request):
     ORDER BY score DESC
     LIMIT 10;
 
-    """.format(request.session['user_id'])
+    """
 
     #execute the raw SQL query
     with connection.cursor() as cursor:
@@ -180,8 +187,6 @@ def top_ten_users(request):
         top_user = {'user': user, 'score': score}
         top_users.append(top_user)
 
-    return render(request, 'user/top_ten_users.html', {'top_users': top_users})
 
-
-
+    return render(request, 'user/top_ten_users.html', {'top_users': top_users, 'is_logged_in': is_logged_in})
 
