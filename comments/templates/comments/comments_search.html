@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Comments</title>
+</head>
+<body>
+    <h1>Search Comments</h1>
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="search_text" placeholder="Search comments..." value="{{ request.POST.search_text }}">
+        <button type="submit">Search</button>
+    </form>
+
+    <h2>Results:</h2>
+    <ul>
+        {% for user in users_with_comments %}
+        <li>{{ user.first_name }} {{ user.last_name }} - Comments: {{ user.comment_count }}</li>
+        {% empty %}
+        <li>No comments found.</li>
+        {% endfor %}
+    </ul>
+    <a href="/">Back to Home</a>
+</body>
+</html>

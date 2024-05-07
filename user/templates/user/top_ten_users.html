@@ -5,11 +5,22 @@
   </head>
   <body>
     <h1>Top Ten Users</h1>
-    <p>Check out our top ten users below:</p>
+    <p>Check out our top users below:</p>
     <ul>
-      {% for user in top_users %}
-      <li><a href="/other_user_profile/{{user.user.id}}">{{ user.user.first_name }} </a></li>
-      {% endfor %}
+    {% for user in top_users %}
+        {% if is_logged_in == True %}
+            {% if user.user.id == request.session.user_id %}
+                <li><a href="/user_info">{{ user.user.first_name }} </a></li>
+            {% else %}
+                <li><a href="/other_user_profile/{{ user.user.id }}">{{ user.user.first_name }}</a></li>
+                {% endif %}
+        {% else %}
+            <li><a href="/other_user_profile/{{ user.user.id }}">{{ user.user.first_name }}</a></li>
+        {% endif %}
+    {% endfor %}
     </ul>
     <a href="/">Back to Home</a>
   </body>
+
+
+</html>
