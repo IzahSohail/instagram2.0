@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>You May Also Like</title>
+  </head>
+  <body>
+    <main>
+      <section>
+          <p>You may also like:</p>
+          {% for photo in photos %}
+              <article>
+                  <p><strong>Owner:</strong> {{ photo.owner.first_name }} {{photo.owner.last_name}}</p>
+                  <img src="{{ photo.photo_data }}" alt="Photo" style="width:100%; max-width: 300px; height: auto;">
+                  <p><b>Caption: </b>{{ photo.caption }}</p>
+                  <b>Tags:</b>
+                  {% for tag in photo.tags %}
+                      <a href = "{% url 'all_tags' tag.tag_id %}">{{tag.description}}</a>
+                  {% endfor %} </br> <br>
+                  <a href="/like_photo/{{ photo.photo_id }}/">Like</a> |
+                  <a href="/view_likes/{{ photo.photo_id }}">{{ photo.total_likes }} Likes</a>
+
+                  <section>
+                      <h4>Comments</h4>
+                      {% for comment in photo.comments %}
+                          {% if comment.photo_id == photo.photo_id %}
+                              <p>{{ comment.comment_text }} - <strong>{% if comment.user_id %}
+                                  {{ comment.user.first_name }}
+                                  {% else %}
+                                  Anonymous
+                                  {% endif %}
+                              </strong></p>
+                          {% endif %}
+                      {% endfor %}
+                  </section>
+              </article>
+          {% endfor %}
+      </section>
+  </main>
+  <footer>
+  </br>
+      <a href="/">Back to home</a>
+  </footer>
+  </body>
+</html>

@@ -4,6 +4,14 @@ from django.db.models import Subquery, Count
 from django.db import connection
 from user.models import User
 from friends.models import Friends
+from album.models import Album, Photo, Photo_likes
+from tags.models import Tag, PhotoTagMapping
+from comments.forms import CommentForm
+from comments.models import Comment
+
+import base64
+from PIL import Image
+from io import BytesIO
 
 
 @csrf_exempt
@@ -40,53 +48,64 @@ def friend_recommendations(request):
 
     return render(request, 'recommendations/friend_rec.html', {'recommendations': recommendations})
 
-
-
-
-
-
-
-
-
-
-
-
-'''
-    #getting user and his friendships
-    user        = User.objects.get(id=request.session['user_id'])
-    friendships = Friends.objects.filter( user_a = user )
-
-    #getting the user's friends as user objects in a list called friends
-    friends = []
-    for i in friendships:
-        friend = User.objects.get(id = i.user_b.id)
-        friends.append(friend)
-   
-    to_recommend = []
-    #for each friend
-    for friend in friends:
-        #get a queryset of their friends
-        friends_of_friend = Friends.objects.filter( user_a = friend )
-         
-        #and exclude friends that the user already has| THIS IS WRONG, YOU ARE NOT SUPPOSED TO EXCLUDE ONLY USER BUT ALL USER'S FRIENDS!!
-        friends_of_friend_filtered = friends_of_friend.exclude(user_b = user)
-
-        #append that filtered query set to the list of friends we will ultimately recommend to the user
-        to_recommend.append(friends_of_friend_filtered)
-
-    friends_of_friends = to_recommend[0]
-    #but first, join all friends of friends
-    for i in to_recommend[1::]:
-        friends_of_friends = friends_of_friends.union(i)
+def photo_recommendation(request):
     
-    #query to group by id with and add an attribute count to each element of the queryset 
-    friends_of_friends = friends_of_friends.values('id').annotate(count=Count('id'))
+    raw_query = """
+                   (SELECT  Mapping2.photo_id
+                    FROM    tags_phototagmapping AS Mapping2, album_photo AS Photos2
+                    WHERE   Mapping2.photo_id = Photos2.photo_id AND Mapping2.tag_id IN (SELECT	Mapping.tag_id
+                                                                                         FROM	album_photo AS Photos, tags_phototagmapping AS Mapping
+                                                                                         WHERE	Photos.owner_id = {} AND Photos.photo_id = Mapping.photo_id	
+                                                                                         GROUP BY  Mapping.tag_id
+                                                                                         ORDER BY  COUNT(Mapping.photo_id) DESC
+                                                                                         LIMIT 5)
+                    GROUP BY    Mapping2.photo_id
+                    ORDER BY    COUNT(Mapping2.tag_id) DESC, (SELECT    COUNT(Mapping2.tag_id)
+                                                              GROUP BY  Mapping2.photo_id))                    
+                    EXCEPT
+                    (SELECT  Photos3.photo_id
+                     FROM    album_photo AS Photos3
+                     WHERE   Photos3.owner_id = {});
+                """.format(request.session['user_id'], request.session['user_id'])
 
-    #now it's safe to remove duplicates, because in the attribute "count", the number of mutual friends is preserved
-    friends_of_friends = friends_of_friends.distinct()
 
-    #finally, just ordering from highest number of mutual friends to lowest
-    friends_of_friends = friends_of_friends.order_by('-count')
+    with connection.cursor() as cursor:
+        cursor.execute(raw_query)
+        rows = cursor.fetchall()
 
-    return render(request, 'friends/add.html', {'users': friends_of_friends})
-'''
+    recommendations = []
+    for row in rows:
+        photo_id = row[0]
+        photo = Photo.objects.get(photo_id=photo_id)
+        recommendations.append(photo)
+    
+    photos_data = []
+    for photo in recommendations:
+        encoded_photo = base64.b64encode(photo.photo_data).decode('utf-8')
+        photo_src = f"data:image/*;base64,{encoded_photo}"
+
+        #tags for each photo
+        tags=[]
+        photo_tag_map = PhotoTagMapping.objects.filter(photo=photo)
+        for mapping in photo_tag_map:
+            tags.append(mapping.tag)
+
+        #comments for each photo
+        comments = Comment.objects.filter(photo=photo)
+
+        # Count likes for each photo
+        total_likes = Photo_likes.objects.filter(photo=photo).count()
+
+        owner = photo.owner
+        
+        photos_data.append({
+            'photo_id': photo.photo_id, 
+            'photo_data': photo_src,
+            'caption': photo.caption,
+            'total_likes': total_likes,
+            'owner': owner,
+            'comments': comments,
+            'tags': tags
+        })
+
+    return render(request, 'recommendations/photo_rec.html', {'photos': photos_data})
