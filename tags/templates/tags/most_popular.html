@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Most Popular Tags | Photo Sharing App</title>
+  </head>
+  <body>
+    <h2>Most popular tags on our website:</h2>
+    {% for tag in tags %}
+    <a href="{% url 'all_tags' tag.tag_id %}">{{tag.description}}</a>
+    {% endfor %}
+  </body>
+</html>

@@ -109,3 +109,22 @@ def all_tags(request, tag_id):
     return render(request, 'tags/all_tags.html', {'photos': photos_data, 'tag': tag})
 
 
+def most_popular(request):
+    raw_query = """
+    SELECT          Map.tag_id, COUNT(Map.photo_id) AS Count
+    FROM            tags_phototagmapping AS Map, tags_tag AS Tag
+    WHERE           Map.tag_id = Tag.tag_id
+    GROUP BY        Map.tag_id
+    ORDER BY        Count DESC;"""
+
+    with connection.cursor() as cursor:
+        cursor.execute(raw_query)
+        rows = cursor.fetchall()
+
+    tags =[]
+    for row in rows:
+        tag_id = row[0]
+        tag = Tag.objects.get(tag_id=tag_id)
+        tags.append(tag)
+
+    return render(request, 'tags/most_popular.html', {'tags': tags})

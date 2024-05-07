@@ -8,18 +8,16 @@
     {% if success_message %}
     <h1>{{ success_message }}, {{ user.first_name }}!</h1>
     <p>Feel free to upload some epic photos today :)</p>
-    <a href="/logout">Logout</a> |
-    <a href="/user_info"> View your profile</a> |
-
+    <a href="/logout">Logout</a> | <a href="/user_info"> View your profile</a> |
     {% else %}
     <h1>Welcome to the Photo Sharing App</h1>
     <p>Join our community and start sharing your photos today.</p>
-    <a href="/login">Login</a> |
-    <a href="/register">Register Now</a> |
-    {% endif %}
+    <a href="/login">Login</a> | <a href="/register">Register Now</a>
+    | {% endif%}
 
-    <a href="/users">View our users</a> | 
-    <a href="/top_ten_users">View our top users</a>
+    <a href="/users">View our users</a> |
+    <a href="/top_ten_users">View our top users</a> |
+    <a href="/view_album/most_popular">Most popular tags</a>
     <!-- A link to a page that displays a list of current users. Useful for new or existing users to explore the community. -->
   </body>
 </html>
