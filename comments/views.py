@@ -37,10 +37,9 @@ def comments_search(request):
             U.id, U.first_name, U.last_name,
             COUNT(*) AS matching_comments_count
         FROM 
-            user_user AS U
-            JOIN comments_comment AS C ON U.id = C.user_id
+            user_user AS U, comments_comment AS C
         WHERE 
-            C.comment_text LIKE %s
+            C.comment_text LIKE %s AND U.id = C.user_id
         GROUP BY 
             U.id, U.first_name, U.last_name
         ORDER BY 
