@@ -8,7 +8,8 @@
   <body>
     <main>
       <section>
-          <p>My photos with the <strong>{{description}}</strong> tag</p>
+          <p>My photos with the <strong>{{tag.description}}</strong> tag.
+          Want to see <a href="{% url 'all_tags' tag.tag_id %}"> all <strong>{{tag.description}}</strong> photos?</a></p>
           {% for photo in photos %}
               <article>
                   <img src="{{ photo.photo_data }}" alt="Photo" style="width:100%; max-width: 300px; height: auto;">

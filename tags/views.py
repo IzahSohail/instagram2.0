@@ -58,9 +58,7 @@ def my_tags(request, tag_id):
         })
     
     tag = Tag.objects.get(tag_id=tag_id)
-    description = tag.description
-
-    return render(request, 'tags/my_tags.html', {'photos': photos_data, 'description': description})
+    return render(request, 'tags/my_tags.html', {'photos': photos_data, 'tag': tag})
 
 
 def all_tags(request, tag_id):
@@ -108,5 +106,6 @@ def all_tags(request, tag_id):
         })
     
     tag = Tag.objects.get(tag_id=tag_id)
-    description = tag.description
-    return render(request, 'tags/all_tags.html', {'photos': photos_data, 'description': description})
+    return render(request, 'tags/all_tags.html', {'photos': photos_data, 'tag': tag})
+
+
