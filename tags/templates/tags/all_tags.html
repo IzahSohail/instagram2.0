@@ -12,6 +12,7 @@
           Want to see only <a href="{% url 'my_tags' tag.tag_id %}">your <strong>{{tag.description}}</strong> photos?</a></p>
           {% for photo in photos %}
               <article>
+                  <p><strong>Owner:</strong> {{ photo.owner.first_name }} {{photo.owner.last_name}}</p>
                   <img src="{{ photo.photo_data }}" alt="Photo" style="width:100%; max-width: 300px; height: auto;">
                   <p><b>Caption: </b>{{ photo.caption }}</p>
                   <b>Tags:</b>

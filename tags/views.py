@@ -96,9 +96,13 @@ def all_tags(request, tag_id):
         # Count likes for each photo
         total_likes = Photo_likes.objects.filter(photo=photo).count()
         
+        owner = photo.owner
+        print(owner)
+
         photos_data.append({
             'photo_id': photo.photo_id, 
             'photo_data': photo_src,
+            'owner': owner,
             'caption': photo.caption,
             'total_likes': total_likes,
             'comments': comments,
@@ -128,3 +132,19 @@ def most_popular(request):
         tags.append(tag)
 
     return render(request, 'tags/most_popular.html', {'tags': tags})
+
+
+def tag_search(request, tags):
+
+    execution_block = [-1]
+    for element in elements:
+        raw_query = """
+        SELECT {} AS Map.tag_id
+        INTERSECTION
+        SELECT          Map.tag_id
+        FROM            tags_phototagmapping AS Map, tags_tag AS Tag
+        WHERE           Map.tag_id = Tag.tag_id
+        """.format(execution_block)
+        execution_block.append(raw_query)
+
+    return render(request, 'tags/tag_search.html', {'photos': photos})

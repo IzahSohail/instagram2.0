@@ -18,6 +18,7 @@ class Photo(models.Model):
     photo_data = models.BinaryField()
     caption = models.CharField(max_length=50)
     album = models.ForeignKey(Album, on_delete=models.CASCADE)
+    owner = models.ForeignKey('user.User', on_delete=models.CASCADE, null=True, related_name='owned_photos')  # Added a custom related_name because it had a clash
 
     def __str__(self):
         return self.caption

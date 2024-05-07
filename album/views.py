@@ -51,7 +51,8 @@ def view_album(request, album_id):
 
         # Create a new Photo instance
         caption = request.POST.get('caption', '')
-        photo = Photo(photo_data=photo_data, caption=caption, album=album)
+        owner = User.objects.get(id=request.session['user_id'])
+        photo = Photo(photo_data=photo_data, caption=caption, album=album, owner=owner)
         photo.save()
 
 
