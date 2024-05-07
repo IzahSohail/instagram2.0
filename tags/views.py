@@ -133,43 +133,46 @@ def most_popular(request):
 
     return render(request, 'tags/most_popular.html', {'tags': tags})
 
+
 @csrf_exempt
-def tag_search(request, tags):
+def tag_search(request):
 
-    if request.method == 'POST':
-        pass
+    if request.method != 'POST':
+        return render(request, 'tags/search_input.html')
 
-    else:
+    elif request.method == 'POST':
+        tags = request.POST.get('tags').split(' ')
+
         with connection.cursor() as cursor:
             cursor.execute("""
-                            CREATE TEMPORARY TABLE searched_tags (
+                            CREATE TEMPORARY TABLE SEARCHED_TAGS (
                             tag_id INTEGER PRIMARY KEY)
                                                             """)
 
             for tag in tags:   
                 cursor.execute("""
-                                INSERT INTO searched_tags
-                                VALUES ((SELECT tag_id FROM tags_tag WHERE description = {}))
+                                INSERT INTO SEARCHED_TAGS
+                                VALUES ((SELECT tag_id FROM tags_tag AS Tags WHERE Tags.description = '{}'))
                                 """.format(tag))
 
             raw_query = """
             SELECT  Photos.photo_id
-            FROM	ALBUM_PHOTOS AS Photos
+            FROM	ALBUM_PHOTO AS Photos
             WHERE	NOT EXISTS (
-                                SELECT	SEARCHED_TAGS.tag_id
-                                FROM 	SEARCHED_TAGS
+                               (SELECT	SEARCHED_TAGS.tag_id
+                                FROM 	SEARCHED_TAGS)
                                 EXCEPT
-                                SELECT	Mapping.tag_id
+                               (SELECT	Mapping.tag_id
                                 FROM	TAGS_PHOTOTAGMAPPING AS Mapping
-                                WHERE	Photos.photo_id = Mapping.photo_id);
+                                WHERE	Photos.photo_id = Mapping.photo_id));
             """
 
             cursor.execute(raw_query)
             rows = cursor.fetchall()
-
+            
             photos=[]
             for row in rows:
-                photo_id = rows[0]
+                photo_id = row[0]
                 photo = Photo.objects.get(photo_id=photo_id)
                 photos.append(photo)
 
