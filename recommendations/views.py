@@ -51,7 +51,7 @@ def friend_recommendations(request):
 def photo_recommendation(request):
     
     raw_query = """
-                   (SELECT  Mapping2.photo_id
+                  WITH Auxi AS (SELECT  Mapping2.photo_id, Mapping2.tag_id
                     FROM    tags_phototagmapping AS Mapping2, album_photo AS Photos2
                     WHERE   Mapping2.photo_id = Photos2.photo_id AND Mapping2.tag_id IN (SELECT	Mapping.tag_id
                                                                                          FROM	album_photo AS Photos, tags_phototagmapping AS Mapping
@@ -59,13 +59,21 @@ def photo_recommendation(request):
                                                                                          GROUP BY  Mapping.tag_id
                                                                                          ORDER BY  COUNT(Mapping.photo_id) DESC
                                                                                          LIMIT 5)
-                    GROUP BY    Mapping2.photo_id
-                    ORDER BY    COUNT(Mapping2.tag_id) DESC, (SELECT    COUNT(Mapping2.tag_id)
-                                                              GROUP BY  Mapping2.photo_id))                    
+                                    
                     EXCEPT
-                    (SELECT  Photos3.photo_id
-                     FROM    album_photo AS Photos3
-                     WHERE   Photos3.owner_id = {});
+                    (SELECT  Photos3.photo_id, Mapping3.tag_id
+                     FROM    album_photo AS Photos3, tags_phototagmapping as Mapping3 
+                     WHERE   Photos3.owner_id = {} AND Mapping3.photo_id = Photos3.photo_id))
+
+                    SELECT Auxi.photo_id
+                    FROM Auxi
+                    GROUP BY Auxi.photo_id
+                    ORDER BY    COUNT(Auxi.tag_id) DESC, (SELECT    COUNT(Mapping5.tag_id)
+                                                          FROM      tags_phototagmapping as Mapping5
+                                                          WHERE     Mapping5.photo_id = Auxi.photo_id
+                                                              GROUP BY  Mapping5.photo_id);
+
+                    
                 """.format(request.session['user_id'], request.session['user_id'])
 
 
