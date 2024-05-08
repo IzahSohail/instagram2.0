@@ -56,7 +56,7 @@ def register(request):
             else:
                 # If no photo was uploaded, save and render the user info without a photo
                 user.save()
-                return render(request, 'user/user_info.html', {
+                return render(request, 'user/welcome.html', {
                     'user': user,
                     'photo_data': None,
                 })

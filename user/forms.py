@@ -20,7 +20,7 @@ class UserRegistrationForm(forms.ModelForm):
         # using their default widgets, except for the 'password' field which is
         # explicitly specified below.
         # Note: 'photo' is handled manually above, so it's not included in this list.
-        fields = ['first_name', 'last_name', 'email', 'password']
+        fields = ['first_name', 'last_name', 'email', 'password', 'date_of_birth', 'gender', 'hometown']
 
         # The widgets dictionary allows you to specify custom widgets for certain fields.
         # Here, the 'password' field uses the PasswordInput widget, which renders it

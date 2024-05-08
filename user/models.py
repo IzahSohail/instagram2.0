@@ -17,6 +17,12 @@ class User(models.Model):
     # use Django's built-in User model or handle passwords more securely
     password = models.CharField(max_length=50)
 
+    date_of_birth = models.DateField(null=True)
+
+    gender = models.CharField(max_length=1, null=True)
+
+    hometown = models.CharField(max_length=50, null=True)
+
     # Define a binary field for storing the user's photo. This field is intended to store
     # binary data (e.g., an image file), but consider using Django's ImageField or FileField
     # for handling file uploads in a more conventional way
