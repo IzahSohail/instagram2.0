@@ -1,0 +1,39 @@
+
+/* style.css */
+
+/* Center align the body and add some basic padding */
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+/* Style the headings */
+h1 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+/* Style the paragraphs */
+p {
+    color: #555;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Style the links */
+a {
+    color: #1a73e8;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
