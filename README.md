@@ -40,9 +40,11 @@ PhotoShare is a web-based photo-sharing application inspired by Flickr, develope
 **Tag search query explanation:**
 The user has ented a number of tags. We want to match photos that include all of them. To do this, we create a temporary table and populate it with the tags the user entered. Then, we can check if the difference between searched tags and a particular photo’s mapping tags return an empty set. If it is, then that mapping contains all the tags the user searched for.
 
+
 ![list](documentation/raw_query2.png)
 **Friend recommendation query explanation:**
 The first view just selects the user's friends. The second view selects friends of friends but removes any of the user's friends or the user themself from that list (because we don’t want to recommend people to the user who are already his/her friends or recommend the user to the user as that doesn't make sense). And then those friends of friends are ordered by the number of mutual friends they have with respect to the user.
+
 
 ![list](documentation/raw_query3.png)
 **Photo recommendation query explanation:**
@@ -67,8 +69,8 @@ The inner query of the WHERE part of Auxi just selects the 5 most used tags of a
 4. **Database Initialization:**
 
    - Create a PostgreSQL database called `my_database`.
-   - Update the database configuration in `django_project/settings.py`:
-     - On line 83, set `PASSWORD` to your PostgreSQL password.
+   - Update the database configuration in `django_Project/settings.py`:
+     - On line 94, set `PASSWORD` to your PostgreSQL password.
     
 5. **Run migrations and load initial data:**
 
