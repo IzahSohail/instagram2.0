@@ -1,12 +1,8 @@
 # PhotoShare Web Application
 
-PhotoShare is a web-based photo-sharing platform inspired by Flickr, developed as a project for a Database Systems course. The platform enables users to register, create albums, upload and manage photos, and engage with content through tags, likes, and comments. The system includes robust user and photo management features, a recommendation system, and search functionalities that enrich the user experience.
+PhotoShare is a web-based photo-sharing platform inspired by Flickr, developed as a project for our Database Systems course. The primary objective of the project was to design, implement, and document the back-end of a web application using **Django** and **PostgreSQL**. Our platform enables users to register, create albums, upload and manage photos, and engage with content through tags, likes, and comments. It includes robust user and photo management features, a recommendation system, and search functionalities that enrich the user experience.
 
-## Project Overview
-
-The primary objective of this project was to design, implement, and document a full-stack database system using **Django** and **PostgreSQL**. The application supports essential functionalities for a photo-sharing platform, such as user registration, friend management, photo and album creation, and community interaction through tags, comments, and likes.
-
-## Key Features
+## Features
 
 ### User Management
 - **User Registration & Authentication:** Users can sign up, providing necessary details. Duplicate emails are restricted.
@@ -30,13 +26,12 @@ The primary objective of this project was to design, implement, and document a f
 - **You-may-also-like Suggestions:** Personalized photo recommendations based on frequently used tags in the user's photo uploads.
 
 ## Tech Stack
-- **Backend:** Python with Django framework, PostgreSQL database.
-- **Frontend:** HTML, CSS, JavaScript (Django templates).
-- **Database Management:** PostgreSQL for relational data storage and efficient querying.
+- **Backend:** Django (Python)
+- **Frontend:** HTML, JavaScript (Django templates).
+- **Database Management:** PostgreSQL
 
 ## Project Highlights
 - **Django ORM & PostgreSQL:** Leveraged Django’s ORM to structure and manage relational data with PostgreSQL, implementing complex queries for user recommendations and advanced search.
-- **Responsive and Interactive UI:** Integrated a responsive UI with rich interaction features like tag-based browsing and photo liking, enhancing user engagement.
 - **Scalable Database Design:** Efficiently structured tables to manage relationships between users, albums, photos, tags, and comments.
 
 ## How to Run the Project Locally
