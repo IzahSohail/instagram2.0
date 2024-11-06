@@ -37,17 +37,19 @@ PhotoShare is a web-based photo-sharing application inspired by Flickr, develope
 - **Django ORM & PostgreSQL:** Leveraged Django’s ORM to structure and manage relational data with PostgreSQL, as well as implemented complex raw queries for user recommendations and advanced search such as:
 
 ![list create](documentation/raw_query1.png)
-**Tag search query explanation:**
+**Tag search query:**
 The user has ented a number of tags. We want to match photos that include all of them. To do this, we create a temporary table and populate it with the tags the user entered. Then, we can check if the difference between searched tags and a particular photo’s mapping tags return an empty set. If it is, then that mapping contains all the tags the user searched for.
+<br>
 <br>
 
 ![list](documentation/raw_query2.png)
-**Friend recommendation query explanation:**
+**Friend recommendation query:**
 The first view just selects the user's friends. The second view selects friends of friends but removes any of the user's friends or the user themself from that list (because we don’t want to recommend people to the user who are already his/her friends or recommend the user to the user as that doesn't make sense). And then those friends of friends are ordered by the number of mutual friends they have with respect to the user.
+<br>
 <br>
 
 ![list](documentation/raw_query3.png)
-**Photo recommendation query explanation:**
+**Photo recommendation query:**
 The inner query of the WHERE part of Auxi just selects the 5 most used tags of a user (which is passed in dynamically). Then, it selects all the photo tag mappings that match any number of those 5 tags and filters it by taking the difference of the User’s photos (we don’t want to recommend the user's photos to him/her). In the next query, the sorting happens. First, tags are ordered by how many tag hits are made out of the 5 most used user’s tag in descending order, and then it is also ordered by “conciseness”, that is, of those tags that match, those who have the least number of tags get priority.
 
 ## How to Run the Project Locally
