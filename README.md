@@ -39,12 +39,12 @@ PhotoShare is a web-based photo-sharing application inspired by Flickr, develope
 ![list create](documentation/raw_query1.png)
 **Tag search query explanation:**
 The user has ented a number of tags. We want to match photos that include all of them. To do this, we create a temporary table and populate it with the tags the user entered. Then, we can check if the difference between searched tags and a particular photo’s mapping tags return an empty set. If it is, then that mapping contains all the tags the user searched for.
-
+<br>
 
 ![list](documentation/raw_query2.png)
 **Friend recommendation query explanation:**
 The first view just selects the user's friends. The second view selects friends of friends but removes any of the user's friends or the user themself from that list (because we don’t want to recommend people to the user who are already his/her friends or recommend the user to the user as that doesn't make sense). And then those friends of friends are ordered by the number of mutual friends they have with respect to the user.
-
+<br>
 
 ![list](documentation/raw_query3.png)
 **Photo recommendation query explanation:**
