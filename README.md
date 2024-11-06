@@ -49,4 +49,40 @@ The first view just selects the user's friends. The second view selects friends 
 The inner query of the WHERE part of Auxi just selects the 5 most used tags of a user (which is passed in dynamically). Then, it selects all the photo tag mappings that match any number of those 5 tags and filters it by taking the difference of the User’s photos (we don’t want to recommend the user's photos to him/her). In the next query, the sorting happens. First, tags are ordered by how many tag hits are made out of the 5 most used user’s tag in descending order, and then it is also ordered by “conciseness”, that is, of those tags that match, those who have the least number of tags get priority.
 
 ## How to Run the Project Locally
-//todo
+1. **Clone the repository:**
+
+   - `git clone https://github.com/IzahSohail/instagram2.0`
+
+2. **Navigate to the project directory:**
+
+   - `cd instagram2.0`
+
+3. **Install dependencies:**
+  ```bash
+  pip install django
+  pip install psycopg2-binary
+  pip install pillow
+  ```
+
+4. **Database Initialization:**
+
+   - Create a PostgreSQL database called `my_database`.
+   - Update the database configuration in `django_project/settings.py`:
+     - On line 83, set `PASSWORD` to your PostgreSQL password.
+    
+5. **Run migrations and load initial data:**
+
+   - In the project’s root directory, run the following commands:
+     ```bash
+     python manage.py makemigrations
+     python manage.py migrate
+     ```
+     
+6. **Start the server:**
+
+   ```bash
+   python manage.py runserver
+   ```
+
+7. **Access the application:**
+   - Open your browser and go to [http://localhost:8000](http://localhost:8000) to access the web application.
